@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>El camino de los errantes — Juana de Arco</title>
+  <meta name="description" content="El camino de los errantes, primer disco de Juana de Arco. Un viaje de la oscuridad hacia la luz." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Crimson+Text:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bosque:    #0a0c0a;
+      --umbral:    #1c2b1e;
+      --musgo:     #2e4a2e;
+      --helecho:   #3d6640;
+      --claro:     #5a8f5e;
+      --luz:       #8abd8e;
+      --linterna:  #b8892a;
+      --portal:    #d4a843;
+      --destello:  #f0cc7a;
+      --capa:      #8b2e2e;
+      --brasa:     #c0504a;
+      --pergamino: #e8e0d0;
+      --polvo:     #a89880;
+      --corteza:   #5c5448;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bosque);
+      color: var(--pergamino);
+      font-family: 'Crimson Text', Georgia, serif;
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 2.5rem;
+      border-bottom: 0.5px solid var(--musgo);
+      position: sticky;
+      top: 0;
+      background: var(--bosque);
+      z-index: 50;
+    }
+    .nav-logo {
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: var(--polvo);
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2rem; }
+    .nav-links a {
+      font-family: 'Crimson Text', serif;
+      font-size: 15px;
+      color: var(--polvo);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--portal); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 480px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 5rem 2rem;
+      border-bottom: 0.5px solid var(--musgo);
+    }
+    .hero-ornament {
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 0.35em;
+      color: var(--helecho);
+      text-transform: uppercase;
+      margin-bottom: 1.75rem;
+    }
+    .hero-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(32px, 6vw, 54px);
+      font-weight: 600;
+      color: var(--pergamino);
+      line-height: 1.15;
+      margin-bottom: 0.5rem;
+    }
+    .hero-title em {
+      font-family: 'Crimson Text', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(36px, 7vw, 60px);
+      color: var(--portal);
+    }
+    .hero-rule {
+      width: 60px;
+      height: 0.5px;
+      background: var(--helecho);
+      margin: 1.5rem auto;
+    }
+    .hero-artist {
+      font-family: 'Cinzel', serif;
+      font-size: 12px;
+      letter-spacing: 0.3em;
+      color: var(--linterna);
+      text-transform: uppercase;
+    }
+    .hero-tagline {
+      font-size: 17px;
+      color: var(--polvo);
+      font-style: italic;
+      margin-top: 0.75rem;
+    }
+
+    /* ── SECTIONS ── */
+    .section {
+      padding: 3rem 2.5rem;
+      border-bottom: 0.5px solid var(--musgo);
+      max-width: 960px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    /* full-width wrapper */
+    .section-wrap {
+      border-bottom: 0.5px solid var(--musgo);
+    }
+    .section-label {
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      color: var(--helecho);
+      text-transform: uppercase;
+      margin-bottom: 1.75rem;
+    }
+
+    /* ── PLAYER ── */
+    .player-bar {
+      background: var(--umbral);
+      border: 0.5px solid var(--musgo);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.75rem;
+      display: none;
+      align-items: center;
+      gap: 14px;
+    }
+    .player-bar.visible { display: flex; }
+    .play-btn {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      border: 0.5px solid var(--linterna);
+      background: transparent;
+      color: var(--portal);
+      font-size: 14px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+    .play-btn:hover { background: rgba(212,168,67,0.12); }
+    .player-info { flex: 1; min-width: 0; }
+    .player-track-name { font-size: 16px; font-style: italic; color: var(--pergamino); }
+    .waveform {
+      display: flex; align-items: center; gap: 2px;
+      height: 20px; margin-top: 5px;
+    }
+    .wb {
+      width: 3px; border-radius: 2px;
+      background: var(--helecho);
+      transition: background 0.3s;
+    }
+    .waveform.playing .wb {
+      background: var(--portal);
+      animation: wave 1.2s ease-in-out infinite;
+    }
+    .wb:nth-child(1){height:8px}  .wb:nth-child(2){height:14px;animation-delay:.10s}
+    .wb:nth-child(3){height:18px;animation-delay:.20s} .wb:nth-child(4){height:10px;animation-delay:.15s}
+    .wb:nth-child(5){height:16px;animation-delay:.25s} .wb:nth-child(6){height:12px;animation-delay:.05s}
+    .wb:nth-child(7){height:8px; animation-delay:.30s} .wb:nth-child(8){height:15px;animation-delay:.12s}
+    @keyframes wave { 0%,100%{transform:scaleY(1)} 50%{transform:scaleY(0.35)} }
+
+    /* ── TRACKS ── */
+    .tracks-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 10px;
+    }
+    .track-card {
+      background: var(--umbral);
+      border: 0.5px solid var(--musgo);
+      border-radius: 10px;
+      padding: 1rem;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+    }
+    .track-card:hover { border-color: var(--helecho); background: #1f301f; }
+    .track-card.unlocked { border-color: var(--linterna); }
+    .track-card.locked   { opacity: 0.65; }
+    .track-num  { font-family: 'Cinzel', serif; font-size: 10px; color: var(--helecho); letter-spacing: 0.1em; margin-bottom: 6px; }
+    .track-name { font-size: 15px; font-style: italic; color: var(--pergamino); margin-bottom: 4px; }
+    .track-dur  { font-size: 12px; color: var(--polvo); font-family: monospace; }
+    .track-icon { position: absolute; top: 10px; right: 10px; font-size: 14px; }
+    .track-badge { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.1em; color: var(--portal); text-transform: uppercase; margin-top: 6px; }
+
+    /* ── UNLOCK MODAL ── */
+    .unlock-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.8);
+      z-index: 200;
+      align-items: center; justify-content: center;
+    }
+    .unlock-overlay.visible { display: flex; }
+    .unlock-box {
+      background: var(--umbral);
+      border: 0.5px solid var(--linterna);
+      border-radius: 14px;
+      padding: 2.25rem;
+      width: min(320px, 90vw);
+      text-align: center;
+    }
+    .unlock-sym  { font-size: 22px; color: var(--portal); margin-bottom: 0.75rem; }
+    .unlock-title { font-family: 'Cinzel', serif; font-size: 18px; color: var(--pergamino); margin-bottom: 0.5rem; }
+    .unlock-desc  { font-size: 14px; color: var(--polvo); font-style: italic; margin-bottom: 1.25rem; line-height: 1.6; }
+    .unlock-q     { background: #111a12; border-radius: 8px; padding: 1rem; margin-bottom: 1.25rem; font-size: 14px; color: var(--polvo); line-height: 1.65; }
+    .unlock-err   { font-size: 13px; color: var(--brasa); font-style: italic; margin-bottom: 8px; display: none; }
+    .unlock-input {
+      width: 100%;
+      border: 0.5px solid var(--musgo); border-radius: 8px;
+      padding: 9px 13px; font-size: 15px;
+      background: var(--bosque); color: var(--pergamino);
+      margin-bottom: 10px;
+      font-family: 'Crimson Text', serif;
+    }
+    .unlock-input:focus { outline: none; border-color: var(--linterna); }
+    .unlock-btn {
+      width: 100%; padding: 11px;
+      border: 0.5px solid var(--linterna); border-radius: 8px;
+      background: transparent; color: var(--portal);
+      font-family: 'Cinzel', serif; font-size: 12px;
+      letter-spacing: 0.12em; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .unlock-btn:hover { background: rgba(212,168,67,0.1); }
+    .unlock-cancel {
+      display: block; margin-top: 12px;
+      font-size: 13px; color: var(--corteza); cursor: pointer;
+      transition: color 0.2s;
+    }
+    .unlock-cancel:hover { color: var(--polvo); }
+
+    /* ── COMMENTS ── */
+    .comment-section { margin-top: 2rem; }
+    .comment-item { padding: 10px 0; border-bottom: 0.5px solid var(--musgo); }
+    .comment-author { font-family: 'Cinzel', serif; font-size: 10px; color: var(--helecho); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 3px; }
+    .comment-text  { font-size: 15px; color: var(--polvo); line-height: 1.65; font-style: italic; }
+    .comment-form  { display: flex; gap: 8px; margin-top: 1rem; }
+    .comment-form input {
+      flex: 1; border: 0.5px solid var(--musgo); border-radius: 8px;
+      padding: 9px 13px; font-size: 14px;
+      background: var(--umbral); color: var(--pergamino);
+      font-family: 'Crimson Text', serif;
+    }
+    .comment-form input:focus { outline: none; border-color: var(--linterna); }
+    .comment-form button {
+      border: 0.5px solid var(--musgo); border-radius: 8px;
+      background: transparent; color: var(--polvo);
+      font-size: 13px; padding: 9px 16px; cursor: pointer;
+      font-family: 'Cinzel', serif; letter-spacing: 0.08em;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .comment-form button:hover { border-color: var(--linterna); color: var(--portal); }
+
+    /* ── BIO ── */
+    .bio-text  { font-size: 17px; color: var(--polvo); line-height: 1.95; max-width: 640px; }
+    .bio-accent { color: var(--portal); font-style: italic; }
+    .bio-rule  { width: 40px; height: 0.5px; background: var(--helecho); margin: 1.5rem 0; }
+
+    /* ── SHOWS ── */
+    .show-item {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 0.9rem 0; border-bottom: 0.5px solid var(--musgo);
+    }
+    .show-date  { font-family: 'Cinzel', serif; font-size: 11px; color: var(--portal); width: 58px; flex-shrink: 0; letter-spacing: 0.05em; text-transform: uppercase; }
+    .show-venue { font-size: 16px; font-style: italic; color: var(--pergamino); }
+    .show-city  { font-size: 13px; color: var(--polvo); }
+    .show-btn   {
+      margin-left: auto;
+      font-family: 'Cinzel', serif; font-size: 10px;
+      border: 0.5px solid var(--musgo); border-radius: 6px;
+      padding: 5px 14px; background: transparent; color: var(--polvo);
+      cursor: pointer; letter-spacing: 0.08em; text-transform: uppercase;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .show-btn:hover { border-color: var(--portal); color: var(--portal); }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 2.5rem;
+      text-align: center;
+      border-top: 0.5px solid var(--musgo);
+    }
+    footer p { font-size: 13px; color: var(--corteza); font-style: italic; letter-spacing: 0.05em; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      nav { padding: 1rem 1.25rem; }
+      .nav-links { gap: 1.25rem; }
+      .section { padding: 2.5rem 1.25rem; }
+      .hero { padding: 3.5rem 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="#">Juana de Arco</a>
+    <div class="nav-links">
+      <a href="#musica">Canciones</a>
+      <a href="#bio">Bio</a>
+      <a href="#shows">Shows</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <p class="hero-ornament">— 2025 —</p>
+    <h1 class="hero-title">El camino<br><em>de los errantes</em></h1>
+    <div class="hero-rule"></div>
+    <p class="hero-artist">Juana de Arco</p>
+    <p class="hero-tagline">Un viaje de la oscuridad hacia la luz</p>
+  </section>
+
+  <div class="section-wrap">
+    <div class="section" id="musica">
+      <p class="section-label">Canciones</p>
+
+      <div class="player-bar" id="player-bar">
+        <button class="play-btn" id="play-btn" onclick="togglePlay()" aria-label="Play/Pausa">&#9654;</button>
+        <div class="player-info">
+          <div class="player-track-name" id="player-name">—</div>
+          <div class="waveform" id="waveform">
+            <div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div>
+            <div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tracks-grid" id="tracks-grid"></div>
+      <div id="comment-area"></div>
+    </div>
+  </div>
+
+  <div class="section-wrap">
+    <div class="section" id="bio">
+      <p class="section-label">Sobre la artista</p>
+      <p class="bio-text">
+        <span class="bio-accent">Juana de Arco</span> lleva años caminando por los bordes del bosque —
+        ese lugar donde lo conocido termina y lo que no puedes controlar empieza.
+        Su música nació de ahí: de la incomodidad de cruzar umbrales sin mapa.
+      </p>
+      <div class="bio-rule"></div>
+      <p class="bio-text">
+        <em>El camino de los errantes</em> es su primer disco. No es un álbum sobre llegar —
+        es sobre el viaje mismo, sobre la oscuridad que hay que atravesar antes de encontrar cualquier luz.
+        Indie alternativo que se escucha de noche, con las ventanas abiertas.
+      </p>
+    </div>
+  </div>
+
+  <div class="section-wrap">
+    <div class="section" id="shows">
+      <p class="section-label">Fechas</p>
+      <div class="show-item">
+        <div class="show-date">12 May</div>
+        <div><div class="show-venue">Café Quindío</div><div class="show-city">Armenia, CO</div></div>
+        <button class="show-btn">Entradas</button>
+      </div>
+      <div class="show-item">
+        <div class="show-date">20 May</div>
+        <div><div class="show-venue">Teatro Aquiles Parra</div><div class="show-city">Pereira, CO</div></div>
+        <button class="show-btn">Entradas</button>
+      </div>
+      <div class="show-item">
+        <div class="show-date">3 Jun</div>
+        <div><div class="show-venue">La Valija de Fuego</div><div class="show-city">Bogotá, CO</div></div>
+        <button class="show-btn">Entradas</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>El camino de los errantes &middot; Juana de Arco &middot; 2025</p>
+  </footer>
+
+  <!-- UNLOCK MODAL -->
+  <div class="unlock-overlay" id="unlock-overlay" onclick="handleOverlayClick(event)">
+    <div class="unlock-box" id="unlock-box">
+      <div class="unlock-sym">&#10022;</div>
+      <div class="unlock-title" id="modal-title"></div>
+      <p class="unlock-desc" id="modal-desc"></p>
+      <div class="unlock-q" id="modal-q"></div>
+      <p class="unlock-err" id="modal-err">El camino no se abre con esa respuesta.</p>
+      <input class="unlock-input" id="modal-input" placeholder="Tu respuesta..." />
+      <button class="unlock-btn" onclick="checkAnswer()">Abrir el camino</button>
+      <span class="unlock-cancel" onclick="closeModal()">Volver atrás</span>
+    </div>
+  </div>
+
+  <script>
+    var tracks = [
+      {
+        num: 1, name: "La partida", dur: "3:42",
+        unlocked: true, challenge: null,
+        comments: ["qué inicio tan poderoso", "me atrapa desde el primer acorde"]
+      },
+      {
+        num: 2, name: "El bosque y lo desconocido", dur: "4:11",
+        unlocked: false,
+        desc: "Adéntrate en el bosque.",
+        q: "Lyra cruza una puerta entre dos mundos. ¿Cómo se llama ese paso? (una palabra)",
+        a: "umbral",
+        comments: []
+      },
+      {
+        num: 3, name: "Canto de las sirenas", dur: "3:58",
+        unlocked: false,
+        desc: "El mar imposible te llama.",
+        q: "¿Qué se siente cuando algo te atrae aunque sabes que es peligroso? (una palabra)",
+        a: "tentación",
+        comments: []
+      },
+      {
+        num: 4, name: "La guía", dur: "5:03",
+        unlocked: false,
+        desc: "Alguien ilumina el camino.",
+        q: "El águila que guía a Lyra tiene plumas de este color. (una palabra)",
+        a: "doradas",
+        comments: []
+      },
+      {
+        num: 5, name: "Alma marinero", dur: "3:29",
+        unlocked: false,
+        desc: "El alma que navegó demasiado lejos.",
+        q: "¿Cómo se llama quien navega los mares? (una palabra)",
+        a: "marinero",
+        comments: []
+      },
+      {
+        num: 6, name: "El regreso", dur: "4:47",
+        unlocked: false,
+        desc: "Solo los errantes que llegaron hasta aquí pueden escuchar el final.",
+        q: "¿Cuál es el nombre completo de este disco? (en minúsculas, con artículo)",
+        a: "el camino de los errantes",
+        comments: []
+      }
+    ];
+
+    var unlocked    = tracks.map(function(t){ return !!t.unlocked; });
+    var comments    = tracks.map(function(t){ return t.comments ? t.comments.slice() : []; });
+    var isPlaying   = false;
+    var activeTrack = null;
+    var selectedIdx = null;
+
+    /* ── RENDER TRACKS ── */
+    function renderTracks() {
+      var g = document.getElementById('tracks-grid');
+      g.innerHTML = '';
+      tracks.forEach(function(t, i) {
+        var card = document.createElement('div');
+        card.className = 'track-card ' + (unlocked[i] ? 'unlocked' : 'locked');
+        card.setAttribute('role', 'button');
+        card.setAttribute('tabindex', '0');
+        card.setAttribute('aria-label', t.name + (unlocked[i] ? ' — disponible' : ' — bloqueada'));
+        card.innerHTML =
+          '<div class="track-num">0' + t.num + '</div>' +
+          '<div class="track-name">' + t.name + '</div>' +
+          '<div class="track-dur">'  + t.dur  + '</div>' +
+          '<div class="track-icon">' +
+            (unlocked[i]
+              ? '<span style="color:var(--portal)">&#9835;</span>'
+              : '<span style="color:var(--corteza)">&#8856;</span>') +
+          '</div>' +
+          (unlocked[i] ? '<div class="track-badge">disponible</div>' : '');
+        card.addEventListener('click', (function(idx){ return function(){ handleClick(idx); }; })(i));
+        card.addEventListener('keydown', (function(idx){ return function(e){ if(e.key==='Enter'||e.key===' ') handleClick(idx); }; })(i));
+        g.appendChild(card);
+      });
+    }
+
+    function handleClick(i) {
+      if (unlocked[i]) { playTrack(i); }
+      else             { openModal(i); }
+    }
+
+    /* ── PLAYER ── */
+    function playTrack(i) {
+      activeTrack = i;
+      isPlaying   = true;
+      document.getElementById('player-bar').classList.add('visible');
+      document.getElementById('player-name').textContent = tracks[i].name;
+      document.getElementById('play-btn').innerHTML = '&#9646;&#9646;';
+      document.getElementById('waveform').classList.add('playing');
+      renderComments(i);
+    }
+
+    function togglePlay() {
+      isPlaying = !isPlaying;
+      document.getElementById('play-btn').innerHTML = isPlaying ? '&#9646;&#9646;' : '&#9654;';
+      document.getElementById('waveform').classList.toggle('playing', isPlaying);
+    }
+
+    /* ── COMMENTS ── */
+    function renderComments(i) {
+      var area  = document.getElementById('comment-area');
+      var items = comments[i].map(function(c) {
+        return '<div class="comment-item">' +
+          '<div class="comment-author">errante</div>' +
+          '<div class="comment-text">' + escHtml(c) + '</div>' +
+          '</div>';
+      }).join('');
+      area.innerHTML =
+        '<div class="comment-section">' +
+          '<p class="section-label" style="margin-bottom:1rem;">Comentarios — ' + tracks[i].name + '</p>' +
+          '<div id="clist-' + i + '">' + items + '</div>' +
+          '<div class="comment-form">' +
+            '<input id="cinput-' + i + '" placeholder="Deja tu huella en el camino..." />' +
+            '<button onclick="addComment(' + i + ')">Enviar</button>' +
+          '</div>' +
+        '</div>';
+    }
+
+    function addComment(i) {
+      var inp = document.getElementById('cinput-' + i);
+      var val = inp.value.trim();
+      if (!val) return;
+      comments[i].push(val);
+      inp.value = '';
+      var list = document.getElementById('clist-' + i);
+      var el   = document.createElement('div');
+      el.className = 'comment-item';
+      el.innerHTML =
+        '<div class="comment-author">tú</div>' +
+        '<div class="comment-text">' + escHtml(val) + '</div>';
+      list.appendChild(el);
+    }
+
+    /* ── MODAL ── */
+    function openModal(i) {
+      selectedIdx = i;
+      var t = tracks[i];
+      document.getElementById('modal-title').textContent = t.name;
+      document.getElementById('modal-desc').textContent  = t.desc || '';
+      document.getElementById('modal-q').textContent     = t.q    || '';
+      document.getElementById('modal-err').style.display = 'none';
+      document.getElementById('modal-input').value       = '';
+      document.getElementById('unlock-overlay').classList.add('visible');
+      setTimeout(function(){ document.getElementById('modal-input').focus(); }, 80);
+    }
+
+    function closeModal() {
+      document.getElementById('unlock-overlay').classList.remove('visible');
+      selectedIdx = null;
+    }
+
+    function handleOverlayClick(e) {
+      if (e.target === document.getElementById('unlock-overlay')) closeModal();
+    }
+
+    function checkAnswer() {
+      var i   = selectedIdx;
+      var val = document.getElementById('modal-input').value.trim().toLowerCase();
+      var ok  = tracks[i].a.toLowerCase();
+      if (val === ok) {
+        unlocked[i] = true;
+        closeModal();
+        renderTracks();
+        playTrack(i);
+      } else {
+        document.getElementById('modal-err').style.display = 'block';
+        document.getElementById('modal-input').value = '';
+        document.getElementById('modal-input').focus();
+      }
+    }
+
+    document.getElementById('modal-input').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') checkAnswer();
+    });
+
+    /* ── UTILS ── */
+    function escHtml(str) {
+      return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    /* ── INIT ── */
+    renderTracks();
+  </script>
+</body>
+</html>
